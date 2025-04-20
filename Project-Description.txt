@@ -1,0 +1,927 @@
+Okay, let's break down the development of the Android frontend for your project management and collaboration app step-by-step, focusing purely on the UI and user flow using Java in Android Studio. We'll ignore the backend logic (database interactions, API calls) for now and concentrate on building the visual components and navigation.
+
+Assumptions:
+
+You have Android Studio installed and set up.
+
+You are familiar with basic Android concepts like Activities, Fragments, Layouts (XML), RecyclerView, Intents, and basic Java syntax.
+
+We will use the Material Components library for a modern, clean look, adhering to good UI/UX practices.
+
+Phase 1: Project Setup & Foundational UI Elements
+
+Step 1: Create New Project
+
+Action: Open Android Studio -> Create New Project.
+
+Template: Choose "Empty Activity".
+
+Configuration:
+
+Name: ProjectFlowApp (or your preferred name)
+
+Package name: com.yourcompany.projectflowapp (replace yourcompany)
+
+Save location: Choose your desired directory.
+
+Language: Java
+
+Minimum SDK: Choose an appropriate level (e.g., API 21 or higher for good Material Component support).
+
+Finish: Let Android Studio build the initial project structure.
+
+Step 2: Add Dependencies
+
+Action: Open your app/build.gradle file.
+
+Add Material Components: Ensure the Material Components library dependency is present (it usually is with newer Android Studio versions). If not, add it under dependencies:
+
+implementation 'com.google.android.material:material:1.x.x' // Use the latest stable version
+
+
+Add RecyclerView: This is standard but good to confirm:
+
+implementation 'androidx.recyclerview:recyclerview:1.x.x' // Use the latest stable version
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Gradle
+IGNORE_WHEN_COPYING_END
+
+Sync: Click "Sync Now" in the notification bar.
+
+Step 3: Define Basic Colors, Dimensions, and Styles
+
+Action: Navigate to the res/values directory.
+
+colors.xml: Define your minimalistic color palette. Think primary color (maybe a calm blue or green), secondary color, background colors (white/light gray), text colors (dark gray/black).
+
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color> <!-- Example, replace -->
+    <color name="purple_500">#FF6200EE</color> <!-- Example, replace -->
+    <color name="purple_700">#FF3700B3</color> <!-- Example, replace -->
+    <color name="teal_200">#FF03DAC5</color> <!-- Example, replace -->
+    <color name="teal_700">#FF018786</color> <!-- Example, replace -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <!-- Add your minimalistic colors -->
+    <color name="colorPrimary">#FFYourPrimary</color>
+    <color name="colorPrimaryVariant">#FFYourPrimaryDark</color>
+    <color name="colorOnPrimary">#FFFFFFFF</color>
+    <color name="colorSecondary">#FFYourAccent</color>
+    <color name="colorSecondaryVariant">#FFYourAccentDark</color>
+    <color name="colorOnSecondary">#FF000000</color>
+    <color name="app_background">#FFF5F5F5</color>
+    <color name="card_background">#FFFFFFFF</color>
+    <color name="text_primary">#DE000000</color> <!-- 87% black -->
+    <color name="text_secondary">#8A000000</color> <!-- 54% black -->
+    <color name="divider_color">#1F000000</color> <!-- 12% black -->
+</resources>
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Xml
+IGNORE_WHEN_COPYING_END
+
+dimens.xml: Define standard margins, padding, text sizes for consistency.
+
+<resources>
+    <dimen name="spacing_small">4dp</dimen>
+    <dimen name="spacing_medium">8dp</dimen>
+    <dimen name="spacing_large">16dp</dimen>
+    <dimen name="spacing_xlarge">24dp</dimen>
+
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_medium">14sp</dimen>
+    <dimen name="text_size_large">16sp</dimen>
+    <dimen name="text_size_xlarge">20sp</dimen>
+    <dimen name="text_size_title">24sp</dimen>
+
+    <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+</resources>
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Xml
+IGNORE_WHEN_COPYING_END
+
+themes.xml (and themes.xml (night)): Update the base AppTheme to inherit from a Material Components theme (e.g., Theme.MaterialComponents.DayNight.NoActionBar) and apply your defined colors.
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.ProjectFlowApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/app_background</item>
+    </style>
+</resources>
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Xml
+IGNORE_WHEN_COPYING_END
+
+Action: Update AndroidManifest.xml to use this theme for the application: android:theme="@style/Theme.ProjectFlowApp".
+
+Phase 2: Authentication Screens
+
+Step 4: Login Screen UI
+
+Action: Create a new Activity (File -> New -> Activity -> Empty Activity). Name it LoginActivity.
+
+Layout (res/layout/activity_login.xml): Design the login screen.
+
+Use a ConstraintLayout or LinearLayout for structure.
+
+Add an ImageView for a subtle logo (optional).
+
+Add two com.google.android.material.textfield.TextInputLayout elements (wrapping TextInputEditText) for "Email/Username" and "Password".
+
+Use style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox".
+
+Set android:hint attributes.
+
+Set android:inputType (e.g., textEmailAddress, textPassword).
+
+Add a com.google.android.material.button.MaterialButton for "Login".
+
+Set text, use appropriate style.
+
+Set android:layout_marginTop for spacing.
+
+Add a TextView below the button for "Don't have an account? Sign Up". Make this clickable later.
+
+Use dimens.xml for margins/padding and colors.xml for text/backgrounds. Keep it clean and centered.
+
+Java (LoginActivity.java):
+
+Get references to the UI elements (EditText, Button, TextView) using findViewById in onCreate.
+
+(Placeholder Action): Set an OnClickListener on the Login button. For now, it can just show a Toast message like "Login Clicked" or navigate to the (yet to be created) main activity using an Intent.
+
+(Placeholder Action): Set an OnClickListener on the "Sign Up" TextView to navigate to the (yet to be created) Signup activity.
+
+Step 5: Sign Up Screen UI
+
+Action: Create a new Activity (File -> New -> Activity -> Empty Activity). Name it SignupActivity.
+
+Layout (res/layout/activity_signup.xml): Similar to Login, but with more fields.
+
+Use ConstraintLayout or LinearLayout.
+
+TextInputLayout / TextInputEditText for:
+
+Username
+
+Email
+
+Password (inputType="textPassword")
+
+Confirm Password (inputType="textPassword")
+
+MaterialButton for "Sign Up".
+
+TextView for "Already have an account? Login".
+
+Apply consistent styling and spacing.
+
+Java (SignupActivity.java):
+
+Get references to UI elements.
+
+(Placeholder Action): Set OnClickListener on the Sign Up button (show Toast or navigate to Login/Main).
+
+(Placeholder Action): Set OnClickListener on the "Login" TextView to navigate back to LoginActivity.
+
+Step 6: Initial Navigation Flow
+
+Action: Modify AndroidManifest.xml.
+
+Set Launcher Activity: Make LoginActivity the starting point of the app. Find the <activity android:name=".LoginActivity"> tag and add the <intent-filter> block inside it, removing it from MainActivity (if it was there).
+
+<activity android:name=".LoginActivity" android:exported="true">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+</activity>
+<activity android:name=".SignupActivity" />
+<activity android:name=".MainActivity" /> <!-- Keep MainActivity declaration -->
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Xml
+IGNORE_WHEN_COPYING_END
+
+Action: Update the OnClickListener in LoginActivity's Login button to start MainActivity:
+
+// Inside LoginActivity.java -> onCreate -> loginButton.setOnClickListener
+Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+startActivity(intent);
+finish(); // Optional: Close LoginActivity after successful login
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Java
+IGNORE_WHEN_COPYING_END
+
+Action: Update the OnClickListener in LoginActivity's "Sign Up" TextView:
+
+// Inside LoginActivity.java -> onCreate -> signupTextView.setOnClickListener
+Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+startActivity(intent);
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Java
+IGNORE_WHEN_COPYING_END
+
+Action: Update the OnClickListener in SignupActivity's "Login" TextView:
+
+// Inside SignupActivity.java -> onCreate -> loginTextView.setOnClickListener
+Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+startActivity(intent);
+finish(); // Close SignupActivity when going back to Login
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Java
+IGNORE_WHEN_COPYING_END
+
+Phase 3: Main Application Interface (Post-Login)
+
+Step 7: Main Activity Structure with Bottom Navigation
+
+Action: Refactor MainActivity to be the main container after login.
+
+Layout (res/layout/activity_main.xml):
+
+Use a CoordinatorLayout as the root.
+
+Inside, add a FrameLayout which will hold the content fragments. Give it an ID like fragment_container. Make it layout_width="match_parent" and layout_height="match_parent" but constrain it or position it above the bottom navigation.
+
+Add a com.google.android.material.bottomnavigation.BottomNavigationView at the bottom.
+
+Give it an ID like bottom_navigation.
+
+Set app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" (optional, nice UX).
+
+Define a menu resource for the navigation items.
+
+Create Bottom Navigation Menu (res/menu/bottom_nav_menu.xml):
+
+Action: Right-click res -> New -> Android Resource File. Resource type: Menu. Name: bottom_nav_menu.
+
+Define items. For now, let's have "Projects" and maybe "Dashboard" (only visible to PMs later). Add icons (use Material Icons via Vector Asset Studio: Right-click res/drawable -> New -> Vector Asset).
+
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_projects"
+        android:icon="@drawable/ic_baseline_list_alt_24" <!-- Replace with your icon -->
+        android:title="Projects" />
+    <item
+        android:id="@+id/nav_dashboard"
+        android:icon="@drawable/ic_baseline_dashboard_24" <!-- Replace with your icon -->
+        android:title="Dashboard" />
+    <!-- Add other items later if needed, e.g., Profile -->
+</menu>
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Xml
+IGNORE_WHEN_COPYING_END
+
+Java (MainActivity.java):
+
+Get reference to BottomNavigationView.
+
+Set an setOnItemSelectedListener (or setOnItemSelectedListener) on the BottomNavigationView.
+
+Inside the listener, use a switch statement based on the itemId.
+
+For each item, load the corresponding Fragment into the fragment_container using FragmentManager and FragmentTransaction.
+
+Load the initial fragment (e.g., Projects) in onCreate.
+
+Step 8: Projects List Fragment UI
+
+Action: Create a new Fragment (File -> New -> Fragment -> Fragment (Blank)). Name it ProjectsFragment.
+
+Layout (res/layout/fragment_projects.xml):
+
+Use a CoordinatorLayout or RelativeLayout as the root.
+
+Add a androidx.recyclerview.widget.RecyclerView. Give it an ID like projects_recycler_view. Set layout_width="match_parent", layout_height="match_parent".
+
+Add a com.google.android.material.floatingactionbutton.FloatingActionButton (FAB) for creating new projects.
+
+Give it an ID like fab_add_project.
+
+Place it in the bottom-right corner (use layout_gravity or constraints).
+
+Assign an "add" icon (ic_baseline_add_24).
+
+(Note: We'll handle showing/hiding this for PMs later).
+
+(Optional) Add a TextView for an "Empty State" (e.g., "No projects yet. Tap + to create one!"). Initially set its visibility to gone.
+
+Create Project Item Layout (res/layout/item_project.xml): This defines how one project looks in the list.
+
+Use com.google.android.material.card.MaterialCardView as the root for a neat look.
+
+Set app:cardCornerRadius="@dimen/card_corner_radius".
+
+Set app:cardElevation="@dimen/card_elevation".
+
+Add margins (@dimen/spacing_medium).
+
+Inside the card, use a LinearLayout (vertical).
+
+Add TextView for Project Title (larger text size, primary text color). ID: text_project_title.
+
+Add TextView for a brief description or PM name (smaller text size, secondary text color). ID: text_project_subtitle.
+
+(Optional) Add a small progress indicator or member count later.
+
+Java (ProjectsFragment.java):
+
+In onCreateView, inflate fragment_projects.xml.
+
+Get references to RecyclerView, FAB, and the empty state TextView.
+
+Setup RecyclerView:
+
+Set a LinearLayoutManager.
+
+Create a ProjectAdapter class (see next step).
+
+Create a placeholder list of project data (e.g., ArrayList<Project>). Project would be a simple POJO class for now (String title, String subtitle).
+
+Instantiate the adapter with the placeholder data.
+
+Set the adapter on the RecyclerView.
+
+Set an OnClickListener on the fab_add_project. For now, it can show a Toast "Add Project Clicked" or navigate to the (yet to be created) CreateProjectActivity.
+
+(Placeholder Logic): Check if the placeholder list is empty. If yes, show the empty state TextView and hide the RecyclerView. Otherwise, hide the empty state view and show the RecyclerView.
+
+Step 9: Project Adapter & ViewHolder
+
+Action: Create a new Java class ProjectAdapter.
+
+Implementation:
+
+Make it extend RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>.
+
+Create an inner class ProjectViewHolder that extends RecyclerView.ViewHolder.
+
+Inside ProjectViewHolder, declare TextView members for title and subtitle.
+
+In the ProjectViewHolder constructor, use itemView.findViewById to get references to the TextViews from item_project.xml.
+
+(Optional) Add an OnClickListener to the itemView itself to handle clicks on a project item.
+
+Implement the required adapter methods:
+
+onCreateViewHolder: Inflate item_project.xml layout, create and return a ProjectViewHolder.
+
+onBindViewHolder: Get the project data for the given position. Bind the data (title, subtitle) to the TextViews in the holder. Set the click listener action here (e.g., navigate to ProjectDetailActivity, passing the project ID).
+
+getItemCount: Return the size of the project data list.
+
+Add a constructor to ProjectAdapter that accepts the list of projects (List<Project>) and maybe a click listener interface.
+
+Add a method updateData(List<Project> newProjects) to refresh the list and call notifyDataSetChanged().
+
+Phase 4: Project Creation Flow
+
+Step 10: Create Project Screen UI
+
+Action: Create a new Activity (File -> New -> Activity -> Empty Activity). Name it CreateProjectActivity.
+
+Layout (res/layout/activity_create_project.xml):
+
+Add an com.google.android.material.appbar.AppBarLayout and com.google.android.material.appbar.MaterialToolbar.
+
+Set a title (e.g., "Create New Project").
+
+Enable the back navigation arrow (Up button).
+
+Use a LinearLayout or ConstraintLayout for the main content area.
+
+Add TextInputLayout / TextInputEditText for "Project Title". Make it mandatory.
+
+Add TextInputLayout / TextInputEditText for "Project Description" (optional, allow multiple lines: android:inputType="textMultiLine").
+
+Add a MaterialButton at the bottom for "Create Project".
+
+Apply standard padding/margins.
+
+Java (CreateProjectActivity.java):
+
+Setup the Toolbar and enable the Up button (getSupportActionBar().setDisplayHomeAsUpEnabled(true)). Handle the Up button press in onOptionsItemSelected.
+
+Get references to EditTexts and the Button.
+
+Set OnClickListener on the "Create Project" button.
+
+(Placeholder Action): Perform basic validation (e.g., title not empty). Show a Toast "Project Created (Placeholder)" and finish() the activity to return to the project list.
+
+Phase 5: Project Detail View
+
+Step 11: Project Detail Activity Structure (Tabs)
+
+Action: Create a new Activity (File -> New -> Activity -> Empty Activity). Name it ProjectDetailActivity.
+
+Layout (res/layout/activity_project_detail.xml):
+
+Use CoordinatorLayout as the root.
+
+Add AppBarLayout containing a MaterialToolbar. ID: toolbar.
+
+Below the AppBarLayout, add com.google.android.material.tabs.TabLayout. ID: tab_layout.
+
+Below the TabLayout, add androidx.viewpager2.widget.ViewPager2. ID: view_pager. Set layout_height="0dp" and constrain it to fill the remaining space if using ConstraintLayout, or use layout_weight="1" in a LinearLayout.
+
+Java (ProjectDetailActivity.java):
+
+Get references to Toolbar, TabLayout, ViewPager2.
+
+Set the Toolbar as the ActionBar (setSupportActionBar(toolbar)). Enable the Up button. Set the title (pass the project title via Intent from ProjectAdapter).
+
+Create a ProjectPagerAdapter class (extends FragmentStateAdapter). This adapter will manage the fragments for each tab.
+
+In the adapter's createFragment method, return instances of the fragments for each tab (e.g., ProjectInfoFragment, TasksFragment, MembersFragment, ProjectCommentsFragment - create these next).
+
+In getItemCount, return the number of tabs (e.g., 4).
+
+Set the adapter on the ViewPager2.
+
+Use TabLayoutMediator to link the TabLayout with the ViewPager2, setting the tab titles.
+
+// Inside ProjectDetailActivity.java, after setting adapter
+new TabLayoutMediator(tabLayout, viewPager,
+        (tab, position) -> {
+            switch (position) {
+                case 0: tab.setText("Details"); break;
+                case 1: tab.setText("Tasks"); break;
+                case 2: tab.setText("Members"); break;
+                case 3: tab.setText("Comments"); break;
+            }
+        }
+).attach();
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Java
+IGNORE_WHEN_COPYING_END
+
+Step 12: Project Detail - 'Details' Tab Fragment UI
+
+Action: Create a new Fragment (File -> New -> Fragment -> Fragment (Blank)). Name it ProjectInfoFragment.
+
+Layout (res/layout/fragment_project_info.xml):
+
+Use LinearLayout (vertical) or ConstraintLayout within a NestedScrollView (to allow scrolling if content grows).
+
+Add TextView for Project Title (display the title passed to the Activity).
+
+Add TextView for Project Description.
+
+Add TextView to show "Managed by: [PM Name]" (placeholder).
+
+Add a MaterialButton "Invite Member". ID: button_invite_member.
+
+Use appropriate text styles, spacing.
+
+Java (ProjectInfoFragment.java):
+
+Inflate the layout in onCreateView.
+
+Get references to TextViews and the Button.
+
+(Placeholder): Retrieve project details (passed via Intent to the Activity, then accessible from the Fragment) and set the text.
+
+Set OnClickListener on the "Invite Member" button to show the (yet to be created) invite dialog/screen.
+
+Step 13: Project Detail - 'Tasks' Tab Fragment UI
+
+Action: Create a new Fragment (File -> New -> Fragment -> Fragment (Blank)). Name it TasksFragment.
+
+Layout (res/layout/fragment_tasks.xml):
+
+Similar structure to ProjectsFragment: CoordinatorLayout or RelativeLayout.
+
+RecyclerView. ID: tasks_recycler_view.
+
+FAB for adding tasks. ID: fab_add_task. Place it bottom-right. (PM only later).
+
+Optional "Empty State" TextView ("No tasks yet").
+
+Create Task Item Layout (res/layout/item_task.xml):
+
+MaterialCardView root.
+
+LinearLayout or ConstraintLayout inside.
+
+TextView for Task Title. ID: text_task_title.
+
+TextView for Assigned Members (e.g., "Assigned to: You, Jane D."). ID: text_task_assignees.
+
+TextView for Task Status (e.g., "Status: To Do"). ID: text_task_status. (Use Chip view for status for better visuals later).
+
+Java (TasksFragment.java):
+
+Inflate layout, get references.
+
+Setup RecyclerView with LinearLayoutManager.
+
+Create TaskAdapter (similar to ProjectAdapter, see next step) and set it with placeholder task data (ArrayList<Task>). A Task POJO would need fields like title, assigneeNames (String for now), status.
+
+Set OnClickListener on fab_add_task to navigate to CreateTaskActivity.
+
+Handle empty state visibility.
+
+Step 14: Task Adapter & ViewHolder
+
+Action: Create a new Java class TaskAdapter.
+
+Implementation:
+
+Extend RecyclerView.Adapter<TaskAdapter.TaskViewHolder>.
+
+Create inner TaskViewHolder extending RecyclerView.ViewHolder.
+
+Hold references to TextViews (title, assignees, status) from item_task.xml.
+
+Find views by ID in the constructor.
+
+Set OnClickListener on the itemView to navigate to TaskDetailActivity, passing the task ID.
+
+Implement adapter methods (onCreateViewHolder, onBindViewHolder, getItemCount) similar to ProjectAdapter, binding Task data.
+
+Step 15: Create Task Screen UI
+
+Action: Create a new Activity (File -> New -> Activity -> Empty Activity). Name it CreateTaskActivity.
+
+Layout (res/layout/activity_create_task.xml):
+
+Add AppBarLayout and MaterialToolbar ("Create New Task", Up button).
+
+Use LinearLayout or ConstraintLayout.
+
+TextInputLayout / TextInputEditText for "Task Title".
+
+TextInputLayout / TextInputEditText for "Task Description" (multiline).
+
+(Placeholder UI for Assignees): Add a TextView "Assign Members" and maybe a simple Button "Select Members". We won't implement the selection UI yet, just the placeholder.
+
+MaterialButton "Create Task".
+
+Java (CreateTaskActivity.java):
+
+Setup Toolbar, Up button.
+
+Get view references.
+
+Set OnClickListener on "Create Task" button (Toast "Task Created", finish()).
+
+Set OnClickListener on "Select Members" button (Toast "Select Members Clicked").
+
+Phase 6: Task Details & Comments
+
+Step 16: Task Detail Screen UI
+
+Action: Create a new Activity (File -> New -> Activity -> Empty Activity). Name it TaskDetailActivity.
+
+Layout (res/layout/activity_task_detail.xml):
+
+Use CoordinatorLayout.
+
+Add AppBarLayout and MaterialToolbar (set title dynamically, add Up button).
+
+Use a NestedScrollView for the main content to allow scrolling.
+
+Inside the NestedScrollView, use a LinearLayout (vertical).
+
+TextView for Task Title (large).
+
+TextView for Task Description (medium).
+
+TextView "Assigned To:".
+
+(Assignee Display): Use com.google.android.material.chip.ChipGroup to display assigned members nicely. Add Chip elements programmatically later, or use a placeholder TextView for now. ID: chip_group_assignees.
+
+TextView "Status:" followed by a TextView or Chip for the actual status.
+
+Add a View as a divider.
+
+TextView "Comments".
+
+RecyclerView for comments. ID: comments_recycler_view. Set nestedScrollingEnabled="false" if inside NestedScrollView.
+
+(Comment Input): At the very bottom (outside NestedScrollView or anchored using CoordinatorLayout), add a LinearLayout (horizontal) or ConstraintLayout.
+
+TextInputEditText for comment input. ID: edit_text_comment. Hint: "Add a comment...".
+
+ImageButton or MaterialButton (icon only) to send the comment. ID: button_send_comment. Use a "send" icon.
+
+Create Comment Item Layout (res/layout/item_comment.xml):
+
+LinearLayout (vertical) or ConstraintLayout.
+
+TextView for Author Name (bold). ID: text_comment_author.
+
+TextView for Comment Timestamp (small, secondary color). ID: text_comment_timestamp.
+
+TextView for Comment Body. ID: text_comment_body.
+
+Add padding.
+
+Java (TaskDetailActivity.java):
+
+Setup Toolbar, Up button. Get Task ID from Intent. Set Toolbar title.
+
+Get references to all views (Title, Desc, Assignees placeholder/ChipGroup, Status, RecyclerView, Comment Input EditText, Send Button).
+
+(Placeholder Data): Populate Title, Description, Assignees (add dummy Chips if using ChipGroup), Status with data corresponding to the Task ID.
+
+Setup comments_recycler_view:
+
+LinearLayoutManager.
+
+Create CommentAdapter (see next step) with placeholder comment data (ArrayList<Comment>). Comment POJO: authorName, timestamp (String for now), body.
+
+Set adapter.
+
+Set OnClickListener on button_send_comment.
+
+(Placeholder Action): Get text from edit_text_comment. If not empty, show a Toast "Comment Sent: [text]", clear the EditText. Add the new comment to the placeholder list and notify the adapter (this simulates real-time addition).
+
+Step 17: Comment Adapter & ViewHolder
+
+Action: Create a new Java class CommentAdapter.
+
+Implementation:
+
+Extend RecyclerView.Adapter<CommentAdapter.CommentViewHolder>.
+
+Create inner CommentViewHolder extending RecyclerView.ViewHolder.
+
+Hold references to TextViews (author, timestamp, body) from item_comment.xml.
+
+Find views by ID in the constructor.
+
+Implement adapter methods (onCreateViewHolder, onBindViewHolder, getItemCount) similar to previous adapters, binding Comment data.
+
+Phase 7: Members & Project Comments
+
+Step 18: Project Detail - 'Members' Tab Fragment UI
+
+Action: Create a new Fragment (File -> New -> Fragment -> Fragment (Blank)). Name it MembersFragment.
+
+Layout (res/layout/fragment_members.xml):
+
+RecyclerView. ID: members_recycler_view.
+
+Optional "Empty State" TextView.
+
+Create Member Item Layout (res/layout/item_member.xml):
+
+RelativeLayout or ConstraintLayout.
+
+ImageView for avatar placeholder (use a default person icon). ID: image_member_avatar.
+
+TextView for Member Name/Email. ID: text_member_name.
+
+TextView for Role (e.g., "Project Manager", "Member"). ID: text_member_role. Align this to the right or below the name.
+
+Add padding.
+
+Java (MembersFragment.java):
+
+Inflate layout, get references.
+
+Setup RecyclerView with LinearLayoutManager.
+
+Create MemberAdapter (see next step) with placeholder member data (ArrayList<Member>). Member POJO: name, email, role, avatarUrl (String, unused for now). Include the PM in this list.
+
+Set adapter.
+
+Handle empty state.
+
+Step 19: Member Adapter & ViewHolder
+
+Action: Create a new Java class MemberAdapter.
+
+Implementation:
+
+Extend RecyclerView.Adapter<MemberAdapter.MemberViewHolder>.
+
+Create inner MemberViewHolder extending RecyclerView.ViewHolder.
+
+Hold references to ImageView (avatar), TextViews (name, role) from item_member.xml.
+
+Find views by ID in the constructor.
+
+Implement adapter methods, binding Member data. Load placeholder icon into ImageView.
+
+Step 20: Invite Member UI (Dialog)
+
+Action: Create a layout file for the dialog (res/layout/dialog_invite_member.xml).
+
+Layout (dialog_invite_member.xml):
+
+LinearLayout (vertical).
+
+TextView Title ("Invite Member").
+
+TextInputLayout / TextInputEditText for "Email or Username". ID: edit_invite_identifier.
+
+Two MaterialButtons in a horizontal LinearLayout at the bottom: "Cancel" and "Invite".
+
+Add padding.
+
+Java (Show Dialog Logic):
+
+In ProjectInfoFragment.java (or wherever the "Invite Member" button is), create a method showInviteMemberDialog().
+
+Inside this method:
+
+Use MaterialAlertDialogBuilder.
+
+Set title, inflate the custom layout (dialog_invite_member.xml).
+
+(Do not set default buttons): Get references to the custom buttons ("Cancel", "Invite") and the EditText from the inflated view.
+
+Set OnClickListener for "Cancel" to dialog.dismiss().
+
+Set OnClickListener for "Invite": Get text from EditText, show Toast "Invite sent to [identifier]", dialog.dismiss().
+
+Create and show the dialog.
+
+Step 21: Project Detail - 'Project Comments' Tab Fragment UI
+
+Action: Create a new Fragment (File -> New -> Fragment -> Fragment (Blank)). Name it ProjectCommentsFragment.
+
+Layout (res/layout/fragment_project_comments.xml):
+
+This layout will be almost identical to the comment section in activity_task_detail.xml, but without the task-specific details above it.
+
+Use RelativeLayout or ConstraintLayout.
+
+RecyclerView for comments. ID: project_comments_recycler_view. Position it to fill most space.
+
+Comment input area at the bottom: EditText (ID: edit_project_comment) and Button (ID: button_send_project_comment). Anchor it to the bottom.
+
+Java (ProjectCommentsFragment.java):
+
+Inflate layout, get references.
+
+Setup project_comments_recycler_view using LinearLayoutManager and the same CommentAdapter used in TaskDetailActivity. Populate with placeholder project-level comments.
+
+Set OnClickListener on button_send_project_comment (similar logic to task comment sending: get text, Toast, clear EditText, add to placeholder list, notify adapter).
+
+Phase 8: PM Dashboard
+
+Step 22: Dashboard Fragment UI
+
+Action: Create a new Fragment (File -> New -> Fragment -> Fragment (Blank)). Name it DashboardFragment. This will be loaded by MainActivity when the dashboard item is selected in the BottomNavigationView.
+
+Layout (res/layout/fragment_dashboard.xml):
+
+Use NestedScrollView with a LinearLayout (vertical) inside, or a ConstraintLayout.
+
+Use MaterialCardViews to section the dashboard information neatly.
+
+Card 1: Project Overview
+
+TextView Title: "Overall Progress Summary".
+
+TextView "Total Active Projects: [Number]" (placeholder).
+
+TextView "Tasks Nearing Deadline: [Number]" (placeholder).
+
+Card 2: Task Status Breakdown
+
+TextView Title: "Task Status".
+
+LinearLayout (horizontal or vertical) or simple TextViews:
+
+"To Do: [Number]"
+
+"In Progress: [Number]"
+
+"Completed: [Number]"
+
+(Placeholder): You could add a ProgressBar here later to show overall completion percentage.
+
+Card 3: Recent Activity (Optional)
+
+TextView Title: "Recent Activity".
+
+RecyclerView (ID: recent_activity_recycler_view) to show recent comments or task updates (use a simple text item layout for now).
+
+Apply standard margins/padding.
+
+Java (DashboardFragment.java):
+
+Inflate layout, get references to the placeholder TextViews.
+
+(Placeholder Data): Set static text in the TextViews (e.g., "Total Active Projects: 5", "To Do: 12").
+
+If you added the Recent Activity RecyclerView, set it up with a simple adapter showing placeholder text items.
+
+Step 23: Conditional UI (PM vs Member - Conceptual)
+
+Action: No new UI elements, but mentally note where UI differs based on user role (which will be determined by backend data later).
+
+Project List: FAB fab_add_project is visible only if the user is a PM (or has creation rights).
+
+Project Details: "Invite Member" button might only be visible to PMs.
+
+Tasks Tab: FAB fab_add_task is visible only to PMs. Task items might have "Edit/Delete" options only visible to PMs or assignees.
+
+Dashboard Tab: The nav_dashboard item in BottomNavigationView should only be visible/enabled if the user is a PM.
+
+Implementation Note: Later, when backend data is available, you will fetch the user's role and use setVisibility(View.VISIBLE) or setVisibility(View.GONE) on these elements, and control menu item visibility programmatically in MainActivity.
+
+Phase 9: Polish & Refinement
+
+Step 24: Implement Up/Back Navigation
+
+Action: Ensure Up navigation works correctly in Activities with Toolbars.
+
+Java: In each Activity that has getSupportActionBar().setDisplayHomeAsUpEnabled(true) (like CreateProjectActivity, ProjectDetailActivity, TaskDetailActivity, CreateTaskActivity), override onOptionsItemSelected:
+
+@Override
+public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    if (item.getItemId() == android.R.id.home) {
+        // Handle the Up button press (usually finish the current activity)
+        finish();
+        return true;
+    }
+    return super.onOptionsItemSelected(item);
+}
+IGNORE_WHEN_COPYING_START
+content_copy
+download
+Use code with caution.
+Java
+IGNORE_WHEN_COPYING_END
+
+Review: Test back-button behavior across all screens.
+
+Step 25: Add Basic Error/Empty States
+
+Action: Go back through Fragments with lists (ProjectsFragment, TasksFragment, MembersFragment, ProjectCommentsFragment, TaskDetailActivity's comment list).
+
+Enhance: Ensure the "Empty State" TextViews you added are correctly shown/hidden based on whether the placeholder list is empty. Make the empty state text more informative (e.g., "No tasks have been created for this project yet.", "Be the first to comment!").
+
+Step 26: Styling Consistency
+
+Action: Review all layout files (activity_*.xml, fragment_*.xml, item_*.xml, dialog_*.xml).
+
+Check:
+
+Are margins and padding consistent (using @dimen/ values)?
+
+Are text sizes appropriate and consistent (using @dimen/ values)?
+
+Are colors used correctly according to your theme (@color/ values)?
+
+Is the overall look and feel minimalistic and neat as requested?
+
+Are CardViews used effectively for separation?
+
+Are TextInputLayouts used for all text inputs?
+
+Step 27: Accessibility Considerations
+
+Action: Add android:contentDescription attributes to ImageButtons, ImageViews, and possibly FABs describing their function (e.g., "Add new project", "User avatar", "Send comment"). This is crucial for screen readers.
+
+Check: Ensure touch target sizes are adequate (Material Components usually handle this well, but check custom elements).
+
+This detailed, incremental plan gives you a solid foundation for the Android frontend of your project management app using Java. Each step builds upon the previous one, focusing on creating the visual structure and basic navigation before any complex logic or backend integration. Remember to test frequently on an emulator or device as you complete each step.
