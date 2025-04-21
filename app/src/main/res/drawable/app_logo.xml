@@ -1,0 +1,49 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Background Circle -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M54,18C33.01,18 16,35.01 16,56C16,76.99 33.01,94 54,94C74.99,94 92,76.99 92,56C92,35.01 74.99,18 54,18Z" />
+    
+    <!-- Project Icon - Stylized Document Stack -->
+    <path
+        android:fillColor="@color/colorPrimary"
+        android:pathData="M42,38L66,38L66,74L42,74Z" />
+    
+    <path
+        android:fillColor="@color/colorSecondary"
+        android:pathData="M46,34L70,34L70,70L46,70Z" />
+    
+    <path
+        android:fillColor="@color/colorPrimaryVariant"
+        android:pathData="M38,42L62,42L62,78L38,78Z" />
+    
+    <!-- Lines representing text on documents -->
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M44,48L56,48L56,50L44,50Z" />
+    
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M44,54L58,54L58,56L44,56Z" />
+    
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M44,60L52,60L52,62L44,62Z" />
+    
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M50,44L64,44L64,46L50,46Z" />
+    
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M52,50L66,50L66,52L52,52Z" />
+    
+    <path
+        android:fillColor="@color/white"
+        android:pathData="M54,56L64,56L64,58L54,58Z" />
+</vector>

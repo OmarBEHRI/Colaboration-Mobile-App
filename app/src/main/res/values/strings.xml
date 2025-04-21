@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ProjectFlowApp</string>
+    <string name="app_logo_description">Application Logo</string>
+    <string name="hint_email_username">Email or Username</string>
+    <string name="hint_password">Password</string>
+    <string name="button_login">Login</string>
+    <string name="prompt_signup">Don\'t have an account? Sign Up</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="button_signup">Sign Up</string>
+    <string name="prompt_login">Already have an account? Login</string>
+    <string name="title_projects">Projects</string>
+    <string name="fab_add_project_description">Add new project</string>
+    <!-- Add other strings as needed -->
+</resources>
